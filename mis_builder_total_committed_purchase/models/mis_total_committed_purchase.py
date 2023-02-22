@@ -13,24 +13,23 @@ class MisTotalCommittedPurchase(models.Model):
     _auto = False
 
     name = fields.Char()
-    analytic_account_id = fields.Many2one(
-        comodel_name="account.analytic.account", string="Analytic Account"
-    )
-    account_id = fields.Many2one(comodel_name="account.account")
-    company_id = fields.Many2one(comodel_name="res.company")
-    product_id = fields.Many2one(comodel_name="product.product")
-    purchase_order_id = fields.Many2one(comodel_name="purchase.order")
+    account_id = fields.Many2one(comodel_name="account.account", string="Account")
+    company_id = fields.Many2one(comodel_name="res.company", string="Company")
     credit = fields.Float()
     debit = fields.Float()
     date = fields.Date()
+    purchase_order_id = fields.Many2one(comodel_name="purchase.order")
 
-    analytic_tag_ids = fields.Many2many(
-        comodel_name="account.analytic.tag",
-        relation="mis_total_committed_purchase_tag_rel",
-        column1="mis_total_committed_purchase_id",
-        column2="account_analytic_tag_id",
-        string="Analytic Tags",
-    )
+    # analytic_account_id = fields.Many2one(
+    #     comodel_name="account.analytic.account", string="Analytic Account"
+    # )
+    # analytic_tag_ids = fields.Many2many(
+    #     comodel_name="account.analytic.tag",
+    #     relation="mis_total_committed_purchase_tag_rel",
+    #     column1="mis_total_committed_purchase_id",
+    #     column2="account_analytic_tag_id",
+    #     string="Analytic Tags",
+    # )
 
     def init(self):
 
