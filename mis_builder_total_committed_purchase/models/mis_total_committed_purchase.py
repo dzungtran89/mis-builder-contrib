@@ -13,9 +13,6 @@ class MisTotalCommittedPurchase(models.Model):
     _auto = False
 
     name = fields.Char()
-    analytic_account_id = fields.Many2one(
-        comodel_name="account.analytic.account", string="Analytic Account"
-    )
     account_id = fields.Many2one(comodel_name="account.account")
     company_id = fields.Many2one(comodel_name="res.company")
     product_id = fields.Many2one(comodel_name="product.product")
@@ -24,12 +21,12 @@ class MisTotalCommittedPurchase(models.Model):
     debit = fields.Float()
     date = fields.Date()
 
-    analytic_tag_ids = fields.Many2many(
-        comodel_name="account.analytic.tag",
-        relation="mis_total_committed_purchase_tag_rel",
+    analytic_account_ids = fields.Many2many(
+        comodel_name="account.analytic.account",
+        relation="mis_total_committed_purchase_analytic_account_rel",
         column1="mis_total_committed_purchase_id",
-        column2="account_analytic_tag_id",
-        string="Analytic Tags",
+        column2="analytic_account_id",
+        string="Analytic Accounts",
     )
 
     def init(self):
@@ -48,11 +45,11 @@ class MisTotalCommittedPurchase(models.Model):
             get_module_resource(
                 "mis_builder_total_committed_purchase",
                 "data",
-                "mis_total_committed_purchase_tag_rel.sql",
+                "mis_total_committed_purchase_analytic_account_rel.sql",
             )
         ) as f2:
-            # Create many2many relation for account.analytic.tag
+            # Create many2many relation for account.analytic.account
             tools.drop_view_if_exists(
-                self.env.cr, "mis_total_committed_purchase_tag_rel"
+                self.env.cr, "mis_total_committed_purchase_analytic_account_rel"
             )
             self.env.cr.execute(f2.read())
